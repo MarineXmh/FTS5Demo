@@ -13,6 +13,11 @@
 		1AE4CB3E1FF0A552005BBBE1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AE4CB3D1FF0A552005BBBE1 /* Assets.xcassets */; };
 		1AE4CB411FF0A552005BBBE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AE4CB3F1FF0A552005BBBE1 /* LaunchScreen.storyboard */; };
 		1AE4CB441FF0A552005BBBE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AE4CB431FF0A552005BBBE1 /* main.m */; };
+		1AE4CB5F1FF0F637005BBBE1 /* libsqlite3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AE4CB5E1FF0F637005BBBE1 /* libsqlite3.a */; };
+		1AF160701FFC689C00194915 /* sqlite_fts_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 1AF1606F1FFC689C00194915 /* sqlite_fts_util.c */; };
+		1AF160731FFCC01B00194915 /* SqliteFTSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF160721FFCC01B00194915 /* SqliteFTSManager.m */; };
+		1AF160761FFDC1E800194915 /* SqliteFTSUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF160751FFDC1E800194915 /* SqliteFTSUtil.m */; };
+		1AF160791FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.c in Sources */ = {isa = PBXBuildFile; fileRef = 1AF160781FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +31,17 @@
 		1AE4CB401FF0A552005BBBE1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1AE4CB421FF0A552005BBBE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1AE4CB431FF0A552005BBBE1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		1AE4CB551FF0D85B005BBBE1 /* BuildScript.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = BuildScript.sh; sourceTree = "<group>"; };
+		1AE4CB5D1FF0F42B005BBBE1 /* sqlite3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
+		1AE4CB5E1FF0F637005BBBE1 /* libsqlite3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsqlite3.a; sourceTree = "<group>"; };
+		1AF1606E1FFC689C00194915 /* sqlite_fts_util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sqlite_fts_util.h; sourceTree = "<group>"; };
+		1AF1606F1FFC689C00194915 /* sqlite_fts_util.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sqlite_fts_util.c; sourceTree = "<group>"; };
+		1AF160711FFCC01B00194915 /* SqliteFTSManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SqliteFTSManager.h; sourceTree = "<group>"; };
+		1AF160721FFCC01B00194915 /* SqliteFTSManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SqliteFTSManager.m; sourceTree = "<group>"; };
+		1AF160741FFDC1E800194915 /* SqliteFTSUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SqliteFTSUtil.h; sourceTree = "<group>"; };
+		1AF160751FFDC1E800194915 /* SqliteFTSUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SqliteFTSUtil.m; sourceTree = "<group>"; };
+		1AF160771FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sqlite_fts_single_word_icu_tokenizer.h; sourceTree = "<group>"; };
+		1AF160781FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sqlite_fts_single_word_icu_tokenizer.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AE4CB5F1FF0F637005BBBE1 /* libsqlite3.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +75,8 @@
 		1AE4CB331FF0A552005BBBE1 /* FTS5Demo */ = {
 			isa = PBXGroup;
 			children = (
+				1AE4CB5E1FF0F637005BBBE1 /* libsqlite3.a */,
+				1AE4CB5D1FF0F42B005BBBE1 /* sqlite3.h */,
 				1AE4CB341FF0A552005BBBE1 /* AppDelegate.h */,
 				1AE4CB351FF0A552005BBBE1 /* AppDelegate.m */,
 				1AE4CB371FF0A552005BBBE1 /* ViewController.h */,
@@ -67,6 +86,15 @@
 				1AE4CB3F1FF0A552005BBBE1 /* LaunchScreen.storyboard */,
 				1AE4CB421FF0A552005BBBE1 /* Info.plist */,
 				1AE4CB431FF0A552005BBBE1 /* main.m */,
+				1AE4CB551FF0D85B005BBBE1 /* BuildScript.sh */,
+				1AF1606E1FFC689C00194915 /* sqlite_fts_util.h */,
+				1AF1606F1FFC689C00194915 /* sqlite_fts_util.c */,
+				1AF160771FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.h */,
+				1AF160781FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.c */,
+				1AF160711FFCC01B00194915 /* SqliteFTSManager.h */,
+				1AF160721FFCC01B00194915 /* SqliteFTSManager.m */,
+				1AF160741FFDC1E800194915 /* SqliteFTSUtil.h */,
+				1AF160751FFDC1E800194915 /* SqliteFTSUtil.m */,
 			);
 			path = FTS5Demo;
 			sourceTree = "<group>";
@@ -143,7 +171,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AE4CB391FF0A552005BBBE1 /* ViewController.m in Sources */,
+				1AF160731FFCC01B00194915 /* SqliteFTSManager.m in Sources */,
+				1AF160701FFC689C00194915 /* sqlite_fts_util.c in Sources */,
+				1AF160761FFDC1E800194915 /* SqliteFTSUtil.m in Sources */,
 				1AE4CB441FF0A552005BBBE1 /* main.m in Sources */,
+				1AF160791FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.c in Sources */,
 				1AE4CB361FF0A552005BBBE1 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,8 +312,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U59U6HYL2Z;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = FTS5Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FTS5Demo",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Xu-Menghua.FTS5Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -294,8 +332,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U59U6HYL2Z;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = FTS5Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FTS5Demo",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Xu-Menghua.FTS5Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
