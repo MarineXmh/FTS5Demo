@@ -85,6 +85,7 @@ int fts5SingleWordTokenize(Fts5Tokenizer *pTokenizer, void *pCtx, int flags, con
         CFIndex characterLength = CFStringGetLength(characterRef);
         CFIndex characterMaxSize = CFStringGetMaximumSizeForEncoding(characterLength, kCFStringEncodingUTF8)+1;
         char *character = (char*)malloc(characterMaxSize);
+        memset(character, '\0', characterMaxSize);
         if (CFStringGetCString(characterRef, character, characterMaxSize, kCFStringEncodingUTF8)) {
             int nToken = (int)strlen(character);
             int iStartOffset = index;
@@ -96,6 +97,7 @@ int fts5SingleWordTokenize(Fts5Tokenizer *pTokenizer, void *pCtx, int flags, con
         } else {
             printf("tokenize error\n");
         }
+        free(character);
         CFRelease(characterRef);
     }
     if (rc == SQLITE_DONE) {

@@ -23,8 +23,7 @@
     [self setDBPath];
     if (open_fts_db() == SQLITE_OK) {
         if (create_tokenizer() == SQLITE_OK) {
-            create_feed_table();
-            create_message_table();
+            create_fts_table();
         }
     }
 }

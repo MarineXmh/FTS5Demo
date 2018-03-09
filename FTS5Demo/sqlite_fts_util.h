@@ -24,20 +24,9 @@ void close_fts_db(void);
 int create_tokenizer(void);
 int execute_sql(const char *sql);
 
-// feed_table
-int create_feed_table(void);
-int drop_feed_table(void);
-int insert_feed(const char *feed_id, const char *title, const char *pin_yin, const char *pin_yin_for_short);
-int delete_feed(const char *where);
-int update_feed(const char *set, const char *where);
-//
-
-// message_table
-int create_message_table(void);
-int drop_message_table(void);
-int insert_message(const char *id, const char *message);
-int delete_message(const char *where);
-int update_message(const char *set, const char *where);
-//
+int create_fts_table(void);
+int drop_fts_table(void);
+int insert_fts(const char *type, const char *col1, const char *col2, const char *col3, const char *col4, const char *col5, const char *uCol1, const char *uCol2, const char *uCol3, const char *uCol4, const char *uCol5, const char *uCol6, const char *uCol7, const char *uCol8, const char *uCol9, const char *uCol10);
+int delete_fts(const char *where);
 
 #endif /* sqlite_fts_util_h */

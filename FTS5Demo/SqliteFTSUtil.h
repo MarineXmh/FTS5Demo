@@ -12,7 +12,7 @@
 
 + (NSMutableArray *)selectWithTable:(NSString *)table Column:(NSString *)column Match:(NSString *)match;
 + (int)executeWithSql:(NSString *)sql;
-+ (int)insertArrayToFeed:(NSArray *)array;
-+ (int)insertArrayToMessage:(NSArray *)array;
++ (int)insertDataToFts:(NSDictionary *)data;
++ (int)insertArrayToFts:(NSArray *)array;
 
 @end

@@ -59,9 +59,8 @@ int execute_sql(const char *sql) {
     return result;
 }
 
-// feed_table
-int create_feed_table(void) {
-    const char *sql = "create virtual table if not exists feed_fts using fts5(feed_id unindexed,title,pin_yin,pin_yin_for_short,tokenize='single_word')";
+int create_fts_table(void) {
+    const char *sql = "create virtual table if not exists fts using fts5(type unindexed,col1,col2,col3,col4,col5,uCol1 unindexed,uCol2 unindexed,uCol3 unindexed,uCol4 unindexed,uCol5 unindexed,uCol6 unindexed,uCol7 unindexed,uCol8 unindexed,uCol9 unindexed,uCol10 unindexed,tokenize='single_word')";
     char *error = NULL;
     int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
     if (error) {
@@ -70,8 +69,8 @@ int create_feed_table(void) {
     return result;
 }
 
-int drop_feed_table(void) {
-    const char *sql = "drop table feed_fts";
+int drop_fts_table(void) {
+    const char *sql = "drop table fts";
     char *error = NULL;
     int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
     if (error) {
@@ -80,10 +79,10 @@ int drop_feed_table(void) {
     return result;
 }
 
-int insert_feed(const char *feed_id, const char *title, const char *pin_yin, const char *pin_yin_for_short) {
-    const char *insert = "insert into feed_fts values ('%s','%s','%s','%s')";
+int insert_fts(const char *type, const char *col1, const char *col2, const char *col3, const char *col4, const char *col5, const char *uCol1, const char *uCol2, const char *uCol3, const char *uCol4, const char *uCol5, const char *uCol6, const char *uCol7, const char *uCol8, const char *uCol9, const char *uCol10) {
+    const char *insert = "insert into fts values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')";
     char sql[SQL_BUFFER_MAX_LENGTH];
-    sprintf(sql, insert, feed_id, title, pin_yin, pin_yin_for_short);
+    sprintf(sql, insert, type, col1, col2, col3, col4, col5, uCol1, uCol2, uCol3, uCol4, uCol5, uCol6, uCol7, uCol8, uCol9, uCol10);
     char *error = NULL;
     int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
     if (error) {
@@ -92,66 +91,8 @@ int insert_feed(const char *feed_id, const char *title, const char *pin_yin, con
     return result;
 }
 
-int delete_feed(const char *where) {
-    const char *delete = "delete from feed_fts where %s";
-    char sql[SQL_BUFFER_MAX_LENGTH];
-    sprintf(sql, delete, where);
-    char *error = NULL;
-    int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
-    if (error) {
-        log_error_information(error);
-    }
-    return result;
-}
-
-int update_feed(const char *set, const char *where) {
-    const char *update = "update feed_fts set %s where %s";
-    char sql[SQL_BUFFER_MAX_LENGTH];
-    sprintf(sql, update, set, where);
-    char *error = NULL;
-    int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
-    if (error) {
-        log_error_information(error);
-    }
-    return result;
-}
-// feed_table
-
-// message_table
-int create_message_table(void) {
-    const char *sql = "create virtual table if not exists message_fts using fts5(id unindexed,message,tokenize='single_word')";
-    char *error = NULL;
-    int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
-    if (error) {
-        log_error_information(error);
-    }
-    return result;
-}
-
-int drop_message_table(void) {
-    const char *sql = "drop table message_fts";
-    char *error = NULL;
-    int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
-    if (error) {
-        log_error_information(error);
-    }
-    return result;
-}
-
-int insert_message(const char *id, const char *message) {
-    const char *insert = "insert into message_fts values ('%s','%s')";
-    char sql[SQL_BUFFER_MAX_LENGTH];
-    sprintf(sql, insert, id, message);
-    char *error = NULL;
-    int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
-    if (error) {
-        log_error_information(error);
-    }
-    return result;
-}
-
-int delete_message(const char *where) {
-    char *delete = "delete from message_fts where %s";
+int delete_fts(const char *where) {
+    const char *delete = "delete from fts where %s";
     char sql[SQL_BUFFER_MAX_LENGTH];
     sprintf(sql, delete, where);
     char *error = NULL;
@@ -162,8 +103,8 @@ int delete_message(const char *where) {
     return result;
 }
 
-int update_message(const char *set, const char *where) {
-    const char *update = "update message_fts set %s where %s";
+int update_fts(const char *set, const char *where) {
+    const char *update = "update fts set %s where %s";
     char sql[SQL_BUFFER_MAX_LENGTH];
     sprintf(sql, update, set, where);
     char *error = NULL;
