@@ -15,12 +15,26 @@
 
 #include <stdio.h>
 
+extern const char *kTurnOffSynchronous;
+extern const char *kCreateFtsTable;
+extern const char *kDropFtsTable;
+extern const char *kInsertToFtsTable;
+extern const char *kInsertToFtsTableBind;
+extern const char *kDeleteFromFtsTable;
+extern const char *kUpdateFtsTable;
+extern const char *kBeginTransaction;
+extern const char *kCommitTransaction;
+
 void set_sqlite_fts_db_path(const char *path);
 char* get_sqlite_fts_db_path(void);
 sqlite3* get_sqlite_fts_db(void);
 
+int beginTransaction(void);
+int commitTransaction(void);
+
 int open_fts_db(void);
 void close_fts_db(void);
+int turnOffSynchronous(void);
 int create_tokenizer(void);
 int execute_sql(const char *sql);
 

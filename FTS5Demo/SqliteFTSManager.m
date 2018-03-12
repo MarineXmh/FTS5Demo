@@ -25,6 +25,9 @@
         if (create_tokenizer() == SQLITE_OK) {
             create_fts_table();
         }
+        if (turnOffSynchronous() == SQLITE_OK) {
+            NSLog(@"turnOffSynchronous");
+        }
     }
 }
 

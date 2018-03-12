@@ -75,7 +75,6 @@ int fts5SingleWordTokenize(Fts5Tokenizer *pTokenizer, void *pCtx, int flags, con
     CFMutableStringRef mdTextRef = CFStringCreateMutableCopy(kCFAllocatorDefault, nText, dTextRef);
     CFStringTrimWhitespace(mdTextRef);
     
-    nText = (int)CFStringGetLength(mdTextRef);
     CFIndex stringLength = CFStringGetLength(mdTextRef);
 
     int index = 0;
@@ -92,6 +91,10 @@ int fts5SingleWordTokenize(Fts5Tokenizer *pTokenizer, void *pCtx, int flags, con
             int iEndOffset = index + nToken;
             rc = xToken(pCtx, 0, character, nToken, iStartOffset, iEndOffset);
             if (rc != SQLITE_OK) {
+                free(character);
+                CFRelease(characterRef);
+                CFRelease(dTextRef);
+                CFRelease(mdTextRef);
                 return rc;
             }
         } else {

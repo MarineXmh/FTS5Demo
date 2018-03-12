@@ -13,6 +13,16 @@
 
 #define SQL_BUFFER_MAX_LENGTH 16384
 
+const char *kTurnOffSynchronous = "PRAGMA synchronous = OFF;";
+const char *kCreateFtsTable = "create virtual table if not exists fts using fts5(type unindexed,col1,col2,col3,col4,col5,uCol1 unindexed,uCol2 unindexed,uCol3 unindexed,uCol4 unindexed,uCol5 unindexed,uCol6 unindexed,uCol7 unindexed,uCol8 unindexed,uCol9 unindexed,uCol10 unindexed,tokenize='single_word')";
+const char *kDropFtsTable = "drop table fts";
+const char *kInsertToFtsTable = "insert into fts values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')";
+const char *kInsertToFtsTableBind = "insert into fts values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+const char *kDeleteFromFtsTable = "delete from fts where %s";
+const char *kUpdateFtsTable = "update fts set %s where %s";
+const char *kBeginTransaction = "begin";
+const char *kCommitTransaction = "commit";
+
 char *sqlite_fts_db_path;
 static sqlite3 *sqlite_fts_db;
 
@@ -59,10 +69,21 @@ int execute_sql(const char *sql) {
     return result;
 }
 
+int turnOffSynchronous(void) {
+    return execute_sql(kTurnOffSynchronous);
+}
+
+int beginTransaction(void) {
+    return execute_sql(kBeginTransaction);
+}
+
+int commitTransaction(void) {
+    return execute_sql(kCommitTransaction);
+}
+
 int create_fts_table(void) {
-    const char *sql = "create virtual table if not exists fts using fts5(type unindexed,col1,col2,col3,col4,col5,uCol1 unindexed,uCol2 unindexed,uCol3 unindexed,uCol4 unindexed,uCol5 unindexed,uCol6 unindexed,uCol7 unindexed,uCol8 unindexed,uCol9 unindexed,uCol10 unindexed,tokenize='single_word')";
     char *error = NULL;
-    int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
+    int result = sqlite3_exec(sqlite_fts_db, kCreateFtsTable, NULL, NULL, &error);
     if (error) {
         log_error_information(error);
     }
@@ -70,9 +91,8 @@ int create_fts_table(void) {
 }
 
 int drop_fts_table(void) {
-    const char *sql = "drop table fts";
     char *error = NULL;
-    int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
+    int result = sqlite3_exec(sqlite_fts_db, kDropFtsTable, NULL, NULL, &error);
     if (error) {
         log_error_information(error);
     }
@@ -80,9 +100,8 @@ int drop_fts_table(void) {
 }
 
 int insert_fts(const char *type, const char *col1, const char *col2, const char *col3, const char *col4, const char *col5, const char *uCol1, const char *uCol2, const char *uCol3, const char *uCol4, const char *uCol5, const char *uCol6, const char *uCol7, const char *uCol8, const char *uCol9, const char *uCol10) {
-    const char *insert = "insert into fts values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')";
     char sql[SQL_BUFFER_MAX_LENGTH];
-    sprintf(sql, insert, type, col1, col2, col3, col4, col5, uCol1, uCol2, uCol3, uCol4, uCol5, uCol6, uCol7, uCol8, uCol9, uCol10);
+    sprintf(sql, kInsertToFtsTable, type, col1, col2, col3, col4, col5, uCol1, uCol2, uCol3, uCol4, uCol5, uCol6, uCol7, uCol8, uCol9, uCol10);
     char *error = NULL;
     int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
     if (error) {
@@ -92,9 +111,8 @@ int insert_fts(const char *type, const char *col1, const char *col2, const char 
 }
 
 int delete_fts(const char *where) {
-    const char *delete = "delete from fts where %s";
     char sql[SQL_BUFFER_MAX_LENGTH];
-    sprintf(sql, delete, where);
+    sprintf(sql, kDeleteFromFtsTable, where);
     char *error = NULL;
     int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
     if (error) {
@@ -104,9 +122,8 @@ int delete_fts(const char *where) {
 }
 
 int update_fts(const char *set, const char *where) {
-    const char *update = "update fts set %s where %s";
     char sql[SQL_BUFFER_MAX_LENGTH];
-    sprintf(sql, update, set, where);
+    sprintf(sql, kUpdateFtsTable, set, where);
     char *error = NULL;
     int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
     if (error) {
