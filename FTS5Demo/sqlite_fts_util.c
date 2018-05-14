@@ -184,7 +184,7 @@ int deleteFromMutipleFtsById(const char *data_id) {
     return result;
 }
 
-int updateMutipleFtsByid(const char *data_id, const char *type, const char *data1, const char *data2, const char *data3, const char *body1, const char *body2, const char *body3) {
+int updateMutipleFtsById(const char *data_id, const char *type, const char *data1, const char *data2, const char *data3, const char *body1, const char *body2, const char *body3) {
     char sql[SQL_BUFFER_MAX_LENGTH];
     sprintf(sql, kUpdateMutipleFtsTableByIdSQL, data_id, type, data1, data2, data3, body1, body2, body3, data_id);
     char *error = NULL;

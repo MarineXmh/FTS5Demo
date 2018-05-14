@@ -10,8 +10,6 @@
 
 @interface SqliteFTSManager : NSObject
 
-@property (nonatomic, strong, readonly) NSString *ftsDBPath;
-
 + (instancetype)sharedManager;
 - (void)initFTS;
 

@@ -7,10 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1A7E39D2205660A4005678A1 /* FTSBaseObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A7E39D1205660A4005678A1 /* FTSBaseObject.m */; };
-		1A7E39D5205662F4005678A1 /* FTSUpdateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A7E39D4205662F4005678A1 /* FTSUpdateManager.m */; };
+		1A20412020A9806E006A6385 /* sqlite_fts_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A20411E20A9806E006A6385 /* sqlite_fts_util.cpp */; };
 		1AE4CB361FF0A552005BBBE1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AE4CB351FF0A552005BBBE1 /* AppDelegate.m */; };
-		1AE4CB391FF0A552005BBBE1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AE4CB381FF0A552005BBBE1 /* ViewController.m */; };
+		1AE4CB391FF0A552005BBBE1 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1AE4CB381FF0A552005BBBE1 /* ViewController.mm */; };
 		1AE4CB3C1FF0A552005BBBE1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AE4CB3A1FF0A552005BBBE1 /* Main.storyboard */; };
 		1AE4CB3E1FF0A552005BBBE1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AE4CB3D1FF0A552005BBBE1 /* Assets.xcassets */; };
 		1AE4CB411FF0A552005BBBE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AE4CB3F1FF0A552005BBBE1 /* LaunchScreen.storyboard */; };
@@ -23,15 +22,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1A7E39D0205660A4005678A1 /* FTSBaseObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FTSBaseObject.h; sourceTree = "<group>"; };
-		1A7E39D1205660A4005678A1 /* FTSBaseObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FTSBaseObject.m; sourceTree = "<group>"; };
-		1A7E39D3205662F4005678A1 /* FTSUpdateManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FTSUpdateManager.h; sourceTree = "<group>"; };
-		1A7E39D4205662F4005678A1 /* FTSUpdateManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FTSUpdateManager.m; sourceTree = "<group>"; };
+		1A20411E20A9806E006A6385 /* sqlite_fts_util.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sqlite_fts_util.cpp; sourceTree = "<group>"; };
+		1A20411F20A9806E006A6385 /* sqlite_fts_util.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sqlite_fts_util.hpp; sourceTree = "<group>"; };
 		1AE4CB311FF0A552005BBBE1 /* FTS5Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FTS5Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AE4CB341FF0A552005BBBE1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1AE4CB351FF0A552005BBBE1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1AE4CB371FF0A552005BBBE1 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		1AE4CB381FF0A552005BBBE1 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		1AE4CB381FF0A552005BBBE1 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		1AE4CB3B1FF0A552005BBBE1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1AE4CB3D1FF0A552005BBBE1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1AE4CB401FF0A552005BBBE1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -86,7 +83,7 @@
 				1AE4CB341FF0A552005BBBE1 /* AppDelegate.h */,
 				1AE4CB351FF0A552005BBBE1 /* AppDelegate.m */,
 				1AE4CB371FF0A552005BBBE1 /* ViewController.h */,
-				1AE4CB381FF0A552005BBBE1 /* ViewController.m */,
+				1AE4CB381FF0A552005BBBE1 /* ViewController.mm */,
 				1AE4CB3A1FF0A552005BBBE1 /* Main.storyboard */,
 				1AE4CB3D1FF0A552005BBBE1 /* Assets.xcassets */,
 				1AE4CB3F1FF0A552005BBBE1 /* LaunchScreen.storyboard */,
@@ -101,10 +98,8 @@
 				1AF160721FFCC01B00194915 /* SqliteFTSManager.m */,
 				1AF160741FFDC1E800194915 /* SqliteFTSUtil.h */,
 				1AF160751FFDC1E800194915 /* SqliteFTSUtil.m */,
-				1A7E39D0205660A4005678A1 /* FTSBaseObject.h */,
-				1A7E39D1205660A4005678A1 /* FTSBaseObject.m */,
-				1A7E39D3205662F4005678A1 /* FTSUpdateManager.h */,
-				1A7E39D4205662F4005678A1 /* FTSUpdateManager.m */,
+				1A20411E20A9806E006A6385 /* sqlite_fts_util.cpp */,
+				1A20411F20A9806E006A6385 /* sqlite_fts_util.hpp */,
 			);
 			path = FTS5Demo;
 			sourceTree = "<group>";
@@ -135,7 +130,7 @@
 		1AE4CB291FF0A552005BBBE1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Xu Menghua";
 				TargetAttributes = {
 					1AE4CB301FF0A552005BBBE1 = {
@@ -180,14 +175,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AE4CB391FF0A552005BBBE1 /* ViewController.m in Sources */,
-				1A7E39D2205660A4005678A1 /* FTSBaseObject.m in Sources */,
+				1AE4CB391FF0A552005BBBE1 /* ViewController.mm in Sources */,
 				1AF160731FFCC01B00194915 /* SqliteFTSManager.m in Sources */,
+				1A20412020A9806E006A6385 /* sqlite_fts_util.cpp in Sources */,
 				1AF160701FFC689C00194915 /* sqlite_fts_util.c in Sources */,
 				1AF160761FFDC1E800194915 /* SqliteFTSUtil.m in Sources */,
 				1AE4CB441FF0A552005BBBE1 /* main.m in Sources */,
 				1AF160791FFF190900194915 /* sqlite_fts_single_word_tokenizer.c in Sources */,
-				1A7E39D5205662F4005678A1 /* FTSUpdateManager.m in Sources */,
 				1AE4CB361FF0A552005BBBE1 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -228,6 +222,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -235,6 +230,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -283,6 +279,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -290,6 +287,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -322,10 +320,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U59U6HYL2Z;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = FTS5Demo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -334,6 +334,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Xu-Menghua.FTS5Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -342,10 +343,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U59U6HYL2Z;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = FTS5Demo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -354,6 +357,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Xu-Menghua.FTS5Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

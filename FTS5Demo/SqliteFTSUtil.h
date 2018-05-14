@@ -11,9 +11,13 @@
 @interface SqliteFTSUtil : NSObject
 
 + (NSMutableArray *)selectWithTable:(NSString *)table Column:(NSString *)column Match:(NSString *)match;
-+ (int)executeWithSql:(NSString *)sql;
+
 + (int)insertArrayToSimpleFts:(NSArray *)array;
 + (int)deleteArrayFromSimpleFTS:(NSArray *)array;
 + (int)updateArrayFromSimpleFTS:(NSArray *)array;
+
++ (int)insertArrayToMutipleFts:(NSArray *)array;
++ (int)deleteArrayFromMutipleFTS:(NSArray *)array;
++ (int)updateArrayFromMutipleFTS:(NSArray *)array;
 
 @end

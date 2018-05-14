@@ -23,8 +23,7 @@
     [self setDBPath];
     if (openFtsDb() == SQLITE_OK) {
         if (createTokenizer() == SQLITE_OK) {
-            createSimpleFtsTable();
-            createMutipleFtsTable();
+            [self createTables];
         }
         if (turnOffSynchronous() == SQLITE_OK) {
             NSLog(@"turnOffSynchronous");
@@ -35,8 +34,12 @@
 - (void)setDBPath {
     NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     NSString *filePath = [documentPath stringByAppendingPathComponent:kFTSDBFilename];
-    _ftsDBPath = [filePath copy];
     setSqliteFtsDbPath(filePath.UTF8String);
+}
+
+- (void)createTables {
+    createSimpleFtsTable();
+    createMutipleFtsTable();
 }
 
 #pragma mark - singleton

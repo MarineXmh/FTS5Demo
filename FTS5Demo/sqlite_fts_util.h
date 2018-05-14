@@ -54,11 +54,12 @@ int createSimpleFtsTable(void);
 int dropSimpleFtsTable(void);
 int insertDataToSimpleFts(const char *data_id, const char *type, const char *data1, const char *data2, const char *data3, const char *body);
 int deleteFromSimpleFtsById(const char *data_id);
+int updateSimpleFtsByid(const char *data_id, const char *type, const char *data1, const char *data2, const char *data3, const char *body);
 
 int createMutipleFtsTable(void);
 int dropMutipleFtsTable(void);
 int insertDataToMutipleFts(const char *data_id, const char *type, const char *data1, const char *data2, const char *data3, const char *body1, const char *body2, const char *body3);
 int deleteFromMutipleFtsById(const char *data_id);
-int updateMutipleFtsByid(const char *data_id, const char *type, const char *data1, const char *data2, const char *data3, const char *body1, const char *body2, const char *body3);
+int updateMutipleFtsById(const char *data_id, const char *type, const char *data1, const char *data2, const char *data3, const char *body1, const char *body2, const char *body3);
 
 #endif /* sqlite_fts_util_h */

@@ -7,10 +7,15 @@
 //
 
 #include "sqlite_fts_single_word_tokenizer.h"
-#include <CoreFoundation/CoreFoundation.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define STRING_BUFFER_LENGTH 16384
 
 typedef struct Fts5SingleWordTokenizerContext Fts5SingleWordTokenizerContext;
 typedef struct Fts5SingleWordTokenizerModule Fts5SingleWordTokenizerModule;
+
+char* subString(const char *str, unsigned int start, unsigned int end);
 
 struct Fts5SingleWordTokenizerContext {
     void *pCtx;
@@ -71,43 +76,48 @@ void fts5SingleWordTokenizerDelete(Fts5Tokenizer *pTok) {
 }
 
 int fts5SingleWordTokenize(Fts5Tokenizer *pTokenizer, void *pCtx, int flags, const char *pText, int nText, int (*xToken)(void *pCtx, int tflags, const char *pToken, int nToken, int iStart, int iEnd)) {
-    CFStringRef dTextRef = CFStringCreateWithCString(kCFAllocatorDefault, pText, kCFStringEncodingUTF8);
-    CFMutableStringRef mdTextRef = CFStringCreateMutableCopy(kCFAllocatorDefault, nText, dTextRef);
-    CFStringTrimWhitespace(mdTextRef);
-    
-    CFIndex stringLength = CFStringGetLength(mdTextRef);
-
     int index = 0;
     int rc = SQLITE_OK;
-    for (; index < stringLength; index++) {
-        CFStringRef characterRef = CFStringCreateWithSubstring(kCFAllocatorDefault, mdTextRef, CFRangeMake(index, 1));
-        CFIndex characterLength = CFStringGetLength(characterRef);
-        CFIndex characterMaxSize = CFStringGetMaximumSizeForEncoding(characterLength, kCFStringEncodingUTF8)+1;
-        char *character = (char*)malloc(characterMaxSize);
-        memset(character, '\0', characterMaxSize);
-        if (CFStringGetCString(characterRef, character, characterMaxSize, kCFStringEncodingUTF8)) {
-            int nToken = (int)strlen(character);
-            int iStartOffset = index;
-            int iEndOffset = index + nToken;
-            rc = xToken(pCtx, 0, character, nToken, iStartOffset, iEndOffset);
-            if (rc != SQLITE_OK) {
-                free(character);
-                CFRelease(characterRef);
-                CFRelease(dTextRef);
-                CFRelease(mdTextRef);
-                return rc;
+    while (index < nText) {
+        const unsigned char ch = pText[index];
+        int nToken = 0;
+        if (ch < 0xC0) {
+            nToken = 1;
+        } else if (ch < 0xF0) {
+            if (ch < 0xE0) {
+                nToken = 2;
+            } else {
+                nToken = 3;
             }
         } else {
-            printf("tokenize error\n");
+            if (ch < 0xF8) {
+                nToken = 4;
+            } else if (ch < 0xFC) {
+                nToken = 5;
+            } else {
+                nToken = 6;
+            }
         }
-        free(character);
-        CFRelease(characterRef);
+        int iStartOffset = index;
+        int iEndOffset = index + nToken;
+        char *token = subString(pText, iStartOffset, iEndOffset);
+        rc = xToken(pCtx, 0, token, nToken, iStartOffset, iEndOffset);
+        if (rc != SQLITE_OK) {
+            printf("tokenize error\n");
+            return rc;
+        }
+        index += nToken;
     }
     if (rc == SQLITE_DONE) {
         rc = SQLITE_OK;
     }
-    CFRelease(dTextRef);
-    CFRelease(mdTextRef);
     return rc;
 }
 
+char* subString(const char *str, unsigned int start, unsigned int end) {
+    unsigned int n = end - start;
+    static char strBuf[STRING_BUFFER_LENGTH];
+    strncpy(strBuf, str + start, n);
+    strBuf[n] = '\0';
+    return strBuf;
+}

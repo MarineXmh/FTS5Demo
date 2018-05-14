@@ -9,8 +9,8 @@
 #import "ViewController.h"
 #import "SqliteFTSManager.h"
 #import "sqlite_fts_util.h"
+#import "sqlite_fts_util.hpp"
 #import "SqliteFTSUtil.h"
-#import <CoreFoundation/CoreFoundation.h>
 #import <Foundation/Foundation.h>
 
 @interface ViewController ()
@@ -25,22 +25,8 @@
     [[SqliteFTSManager sharedManager] initFTS];
 //    [self prepareTestData];
 //    [self testMatch];
-    [self test];
-}
-
-- (void)test {
-    NSMutableArray *dataArray = [NSMutableArray array];
-    beginTransaction();
-    for (int i = 0; i < 100; i++) {
-        NSDictionary *data = @{@"data_id":[NSString stringWithFormat:@"%d", i], @"type":@"1", @"body":@"abcd", @"data1":@"gggg"};
-        [dataArray addObject:data];
-    }
-    [SqliteFTSUtil insertArrayToSimpleFts:dataArray];
-    commitTransaction();
-    [SqliteFTSUtil deleteArrayFromSimpleFTS:@[@{@"data_id":@"1"}]];
-    NSArray *result = [SqliteFTSUtil selectWithTable:@"fts" Column:@"fts" Match:@"a"];
-    [SqliteFTSUtil deleteArrayFromSimpleFTS:dataArray];
-    result = [SqliteFTSUtil selectWithTable:@"fts" Column:@"fts" Match:@"a"];;
+//    [self test];
+    [self testCPPFunctions];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -82,6 +68,47 @@
     NSLog(@"match finished");
     NSLog(@"time:%lf", time);
     NSLog(@"result list count:%ld", result.count);
+}
+
+- (void)test {
+    NSMutableArray *dataArray = [NSMutableArray array];
+    for (int i = 0; i < 100; i++) {
+        NSDictionary *data = @{@"data_id":[NSString stringWithFormat:@"%d", i], @"type":@"1", @"body":@"abcd", @"data1":@"gggg"};
+        [dataArray addObject:data];
+    }
+    [SqliteFTSUtil insertArrayToSimpleFts:dataArray];
+    [SqliteFTSUtil deleteArrayFromSimpleFTS:@[@{@"data_id":@"1"}]];
+    NSArray *result = [SqliteFTSUtil selectWithTable:@"simple_fts" Column:@"simple_fts" Match:@"a"];
+    [SqliteFTSUtil updateArrayFromSimpleFTS:@[@{@"data_id":@"99", @"type":@"5", @"body":@"abcdefg", @"data1":@"ggggasdf"}]];
+    result = [SqliteFTSUtil selectWithTable:@"simple_fts" Column:@"simple_fts" Match:@"a"];
+    [SqliteFTSUtil deleteArrayFromSimpleFTS:dataArray];
+    result = [SqliteFTSUtil selectWithTable:@"simple_fts" Column:@"simple_fts" Match:@"a"];
+}
+
+- (void)testCPPFunctions {
+    vector<map<string,string>> dataVector;
+    for (int i = 0; i < 100; i++) {
+        const char *dataId = [[NSString stringWithFormat:@"%d", i] cStringUsingEncoding:NSUTF8StringEncoding];
+        string dataIdStr(dataId);
+        map<string,string> dataMap;
+        dataMap.insert(make_pair("data_id", dataIdStr));
+        dataMap.insert(make_pair("type", "666"));
+        dataMap.insert(make_pair("body", "xumenghua"));
+        dataMap.insert(make_pair("data1", "hahaha"));
+        dataVector.push_back(dataMap);
+    }
+    insertVectorToSimpleFts(dataVector);
+    
+    NSArray *result = [SqliteFTSUtil selectWithTable:@"simple_fts" Column:@"simple_fts" Match:@"xu"];
+    vector<map<string,string>> updateVector;
+    map<string,string> updateMap;
+    updateMap.insert(make_pair("data_id", "6"));
+    updateMap.insert(make_pair("type", "888"));
+    updateVector.push_back(updateMap);
+    updateVectorToSimpleFts(updateVector);
+    result = [SqliteFTSUtil selectWithTable:@"simple_fts" Column:@"simple_fts" Match:@"xu"];
+    deleteVectorToSimpleFts(dataVector);
+    result = [SqliteFTSUtil selectWithTable:@"simple_fts" Column:@"simple_fts" Match:@"xu"];
 }
 
 @end
