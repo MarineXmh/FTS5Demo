@@ -23,10 +23,25 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     [[SqliteFTSManager sharedManager] initFTS];
-    [self prepareTestData];
-    [self testMatch];
+//    [self prepareTestData];
+//    [self testMatch];
+    [self test];
 }
 
+- (void)test {
+    NSMutableArray *dataArray = [NSMutableArray array];
+    beginTransaction();
+    for (int i = 0; i < 100; i++) {
+        NSDictionary *data = @{@"data_id":[NSString stringWithFormat:@"%d", i], @"type":@"1", @"body":@"abcd", @"data1":@"gggg"};
+        [dataArray addObject:data];
+    }
+    [SqliteFTSUtil insertArrayToSimpleFts:dataArray];
+    commitTransaction();
+    [SqliteFTSUtil deleteArrayFromSimpleFTS:@[@{@"data_id":@"1"}]];
+    NSArray *result = [SqliteFTSUtil selectWithTable:@"fts" Column:@"fts" Match:@"a"];
+    [SqliteFTSUtil deleteArrayFromSimpleFTS:dataArray];
+    result = [SqliteFTSUtil selectWithTable:@"fts" Column:@"fts" Match:@"a"];;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -44,10 +59,10 @@
         NSRange range = NSMakeRange(location, length);
         NSString *messageId = [NSString stringWithFormat:@"%06d", i];
         NSString *message = [text substringWithRange:range];
-        NSDictionary *data = @{@"type":@"1", @"col1":message, @"uCol1":messageId};
+        NSDictionary *data = @{@"type":@"1", @"body":message, @"data_id":messageId};
         [dataArray addObject:data];
     }
-    if ([SqliteFTSUtil insertArrayToFts:dataArray] != SQLITE_OK) {
+    if ([SqliteFTSUtil insertArrayToSimpleFts:dataArray] != SQLITE_OK) {
         NSLog(@"prepare test data error");
     }
     NSDate *finishTime = [NSDate date];
@@ -61,7 +76,7 @@
     NSLog(@"data path:%@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]);
     NSDate *startTime = [NSDate date];
     NSLog(@"match started");
-    NSArray *result = [SqliteFTSUtil selectWithTable:@"fts" Column:@"fts" Match:@"江泽民"];
+    NSArray *result = [SqliteFTSUtil selectWithTable:@"simple_fts" Column:@"simple_fts" Match:@"江泽民"];
     NSDate *finishTime = [NSDate date];
     NSTimeInterval time = [finishTime timeIntervalSinceDate:startTime];
     NSLog(@"match finished");

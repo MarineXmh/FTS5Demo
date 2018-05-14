@@ -28,14 +28,10 @@
     if (match == nil || [match isEqualToString:@""]) {
         match = @"*";
     }
-    sqlite3 *db = get_sqlite_fts_db();
+    sqlite3 *db = getSqliteFtsDb();
     NSString *sqlite = [NSString stringWithFormat:@"select * from %@ where %@ match '%@'", table, column, match];
     sqlite3_stmt *stmt = NULL;
-    NSDate *startTime = [NSDate date];
     int result = sqlite3_prepare_v2(db, sqlite.UTF8String, -1, &stmt, NULL);
-    NSDate *finishTime = [NSDate date];
-    NSTimeInterval time = [finishTime timeIntervalSinceDate:startTime];
-    NSLog(@"match time:%lf", time);
     if (result == SQLITE_OK) {
         int columnCount = sqlite3_column_count(stmt);
         while (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -59,75 +55,33 @@
     if (sql == nil || [sql isEqualToString:@""]) {
         return SQLITE_ERROR;
     }
-    sqlite3 *db = get_sqlite_fts_db();
+    sqlite3 *db = getSqliteFtsDb();
     char *error = NULL;
     int result = sqlite3_exec(db, [sql UTF8String], nil, nil, &error);
     return result;
 }
 
-+ (int)insertDataToFts:(NSDictionary *)data {
-    const char *type = [self getCharDataWithCol:@"type" InDataDictionary:data];
-    const char *col1 = [self getCharDataWithCol:@"col1" InDataDictionary:data];
-    const char *col2 = [self getCharDataWithCol:@"col2" InDataDictionary:data];
-    const char *col3 = [self getCharDataWithCol:@"col3" InDataDictionary:data];
-    const char *col4 = [self getCharDataWithCol:@"col4" InDataDictionary:data];
-    const char *col5 = [self getCharDataWithCol:@"col5" InDataDictionary:data];
-    const char *uCol1 = [self getCharDataWithCol:@"uCol1" InDataDictionary:data];
-    const char *uCol2 = [self getCharDataWithCol:@"uCol2" InDataDictionary:data];
-    const char *uCol3 = [self getCharDataWithCol:@"uCol3" InDataDictionary:data];
-    const char *uCol4 = [self getCharDataWithCol:@"uCol4" InDataDictionary:data];
-    const char *uCol5 = [self getCharDataWithCol:@"uCol5" InDataDictionary:data];
-    const char *uCol6 = [self getCharDataWithCol:@"uCol6" InDataDictionary:data];
-    const char *uCol7 = [self getCharDataWithCol:@"uCol7" InDataDictionary:data];
-    const char *uCol8 = [self getCharDataWithCol:@"uCol8" InDataDictionary:data];
-    const char *uCol9 = [self getCharDataWithCol:@"uCol9" InDataDictionary:data];
-    const char *uCol10 = [self getCharDataWithCol:@"uCol10" InDataDictionary:data];
-    int result = insert_fts(type, col1, col2, col3, col4, col5, uCol1, uCol2, uCol3, uCol4, uCol5, uCol6, uCol7, uCol8, uCol9, uCol10);
-    return result;
-}
-
-+ (int)insertArrayToFts:(NSArray *)array {
++ (int)insertArrayToSimpleFts:(NSArray *)array {
     beginTransaction();
     sqlite3_stmt *stmt = NULL;
-    sqlite3 *db = get_sqlite_fts_db();
-    int result = sqlite3_prepare_v2(db, kInsertToFtsTableBind, (int)strlen(kInsertToFtsTableBind), &stmt, NULL);
+    sqlite3 *db = getSqliteFtsDb();
+    int result = sqlite3_prepare_v2(db, kInsertToSimpleFtsTableBindSQL, (int)strlen(kInsertToSimpleFtsTableBindSQL), &stmt, NULL);
     if (result != SQLITE_OK) {
         return result;
     }
     for (NSDictionary *data in array) {
-        sqlite3_reset(stmt);
+        const char *data_id = [self getCharDataWithCol:@"data_id" InDataDictionary:data];
         const char *type = [self getCharDataWithCol:@"type" InDataDictionary:data];
-        const char *col1 = [self getCharDataWithCol:@"col1" InDataDictionary:data];
-        const char *col2 = [self getCharDataWithCol:@"col2" InDataDictionary:data];
-        const char *col3 = [self getCharDataWithCol:@"col3" InDataDictionary:data];
-        const char *col4 = [self getCharDataWithCol:@"col4" InDataDictionary:data];
-        const char *col5 = [self getCharDataWithCol:@"col5" InDataDictionary:data];
-        const char *uCol1 = [self getCharDataWithCol:@"uCol1" InDataDictionary:data];
-        const char *uCol2 = [self getCharDataWithCol:@"uCol2" InDataDictionary:data];
-        const char *uCol3 = [self getCharDataWithCol:@"uCol3" InDataDictionary:data];
-        const char *uCol4 = [self getCharDataWithCol:@"uCol4" InDataDictionary:data];
-        const char *uCol5 = [self getCharDataWithCol:@"uCol5" InDataDictionary:data];
-        const char *uCol6 = [self getCharDataWithCol:@"uCol6" InDataDictionary:data];
-        const char *uCol7 = [self getCharDataWithCol:@"uCol7" InDataDictionary:data];
-        const char *uCol8 = [self getCharDataWithCol:@"uCol8" InDataDictionary:data];
-        const char *uCol9 = [self getCharDataWithCol:@"uCol9" InDataDictionary:data];
-        const char *uCol10 = [self getCharDataWithCol:@"uCol10" InDataDictionary:data];
-        sqlite3_bind_text(stmt, 1, type, (int)strlen(type), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 2, col1, (int)strlen(col1), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 3, col2, (int)strlen(col2), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 4, col3, (int)strlen(col3), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 5, col4, (int)strlen(col4), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 6, col5, (int)strlen(col5), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 7, uCol1, (int)strlen(uCol1), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 8, uCol2, (int)strlen(uCol2), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 9, uCol3, (int)strlen(uCol3), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 10, uCol4, (int)strlen(uCol4), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 11, uCol5, (int)strlen(uCol5), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 12, uCol6, (int)strlen(uCol6), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 13, uCol7, (int)strlen(uCol7), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 14, uCol8, (int)strlen(uCol8), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 15, uCol9, (int)strlen(uCol9), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 16, uCol10, (int)strlen(uCol10), SQLITE_STATIC);
+        const char *data1 = [self getCharDataWithCol:@"data1" InDataDictionary:data];
+        const char *data2 = [self getCharDataWithCol:@"data2" InDataDictionary:data];
+        const char *data3 = [self getCharDataWithCol:@"data3" InDataDictionary:data];
+        const char *body = [self getCharDataWithCol:@"body" InDataDictionary:data];
+        sqlite3_bind_text(stmt, 1, data_id, (int)strlen(data_id), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, type, (int)strlen(type), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, data1, (int)strlen(data1), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 4, data2, (int)strlen(data2), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 5, data3, (int)strlen(data3), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 6, body, (int)strlen(body), SQLITE_STATIC);
         int result = sqlite3_step(stmt);
         if (result == SQLITE_ERROR) {
             return result;
@@ -145,6 +99,65 @@
     }
     const char *colCharData = [colString cStringUsingEncoding:NSUTF8StringEncoding];
     return colCharData;
+}
+
++ (int)deleteDataFromSimpleFTS:(NSDictionary *)data {
+    const char *data_id = [self getCharDataWithCol:@"data_id" InDataDictionary:data];
+    int result = deleteFromSimpleFtsById(data_id);
+    return result;
+}
+
++ (int)deleteArrayFromSimpleFTS:(NSArray *)array {
+    beginTransaction();
+    sqlite3_stmt *stmt = NULL;
+    sqlite3 *db = getSqliteFtsDb();
+    int result = sqlite3_prepare_v2(db, kDeleteFromSimpleFtsTableByIdBindSQL, (int)strlen(kDeleteFromSimpleFtsTableByIdBindSQL), &stmt, NULL);
+    if (result != SQLITE_OK) {
+        return result;
+    }
+    for (NSDictionary *data in array) {
+        const char *data_id = [self getCharDataWithCol:@"data_id" InDataDictionary:data];
+        sqlite3_bind_text(stmt, 1, data_id, (int)strlen(data_id), SQLITE_STATIC);
+        int result = sqlite3_step(stmt);
+        if (result == SQLITE_ERROR) {
+            return result;
+        }
+    }
+    commitTransaction();
+    sqlite3_finalize(stmt);
+    return SQLITE_OK;
+}
+
++ (int)updateArrayFromSimpleFTS:(NSArray *)array {
+    beginTransaction();
+    sqlite3_stmt *stmt = NULL;
+    sqlite3 *db = getSqliteFtsDb();
+    int result = sqlite3_prepare_v2(db, kUpdateSimpleFtsTableByIdBindSQL, (int)strlen(kUpdateSimpleFtsTableByIdBindSQL), &stmt, NULL);
+    if (result != SQLITE_OK) {
+        return result;
+    }
+    for (NSDictionary *data in array) {
+        const char *data_id = [self getCharDataWithCol:@"data_id" InDataDictionary:data];
+        const char *type = [self getCharDataWithCol:@"type" InDataDictionary:data];
+        const char *data1 = [self getCharDataWithCol:@"data1" InDataDictionary:data];
+        const char *data2 = [self getCharDataWithCol:@"data2" InDataDictionary:data];
+        const char *data3 = [self getCharDataWithCol:@"data3" InDataDictionary:data];
+        const char *body = [self getCharDataWithCol:@"body" InDataDictionary:data];
+        sqlite3_bind_text(stmt, 1, data_id, (int)strlen(data_id), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, type, (int)strlen(type), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, data1, (int)strlen(data1), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 4, data2, (int)strlen(data2), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 5, data3, (int)strlen(data3), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 6, body, (int)strlen(body), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 7, data_id, (int)strlen(data_id), SQLITE_STATIC);
+        int result = sqlite3_step(stmt);
+        if (result == SQLITE_ERROR) {
+            return result;
+        }
+    }
+    commitTransaction();
+    sqlite3_finalize(stmt);
+    return SQLITE_OK;
 }
 
 @end

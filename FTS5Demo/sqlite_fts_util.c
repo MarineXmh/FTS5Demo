@@ -9,127 +9,188 @@
 #include "sqlite_fts_util.h"
 #include <string.h>
 #include <stdlib.h>
-#include "sqlite_fts_single_word_icu_tokenizer.h"
+#include "sqlite_fts_single_word_tokenizer.h"
 
 #define SQL_BUFFER_MAX_LENGTH 16384
 
-const char *kTurnOffSynchronous = "PRAGMA synchronous = OFF;";
-const char *kCreateFtsTable = "create virtual table if not exists fts using fts5(type unindexed,col1,col2,col3,col4,col5,uCol1 unindexed,uCol2 unindexed,uCol3 unindexed,uCol4 unindexed,uCol5 unindexed,uCol6 unindexed,uCol7 unindexed,uCol8 unindexed,uCol9 unindexed,uCol10 unindexed,tokenize='single_word')";
-const char *kDropFtsTable = "drop table fts";
-const char *kInsertToFtsTable = "insert into fts values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')";
-const char *kInsertToFtsTableBind = "insert into fts values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-const char *kDeleteFromFtsTable = "delete from fts where %s";
-const char *kUpdateFtsTable = "update fts set %s where %s";
-const char *kBeginTransaction = "begin";
-const char *kCommitTransaction = "commit";
+const char *kTurnOffSynchronousSQL = "PRAGMA synchronous = OFF;";
+const char *kBeginTransactionSQL = "BEGIN";
+const char *kCommitTransactionSQL = "COMMIT";
+
+const char *kCreateSimpleFtsTableSQL = "CREATE VIRTUAL TABLE IF NOT EXISTS simple_fts USING fts5(DATA_ID UNINDEXED,TYPE UNINDEXED,DATA1 UNINDEXED,DATA2 UNINDEXED,DATA3 UNINDEXED,BODY,tokenize='single_word')";
+const char *kDropSimpleFtsTableSQL = "DROP TABLE simple_fts";
+const char *kInsertToSimpleFtsTableSQL = "INSERT INTO simple_fts VALUES ('%s','%s','%s','%s','%s','%s')";
+const char *kInsertToSimpleFtsTableBindSQL = "INSERT INTO simple_fts VALUES (?,?,?,?,?,?)";
+const char *kDeleteFromSimpleFtsTableByIdSQL = "DELETE FROM simple_fts WHERE DATA_ID='%s'";
+const char *kDeleteFromSimpleFtsTableByIdBindSQL = "DELETE FROM simple_fts WHERE DATA_ID=?";
+const char *kUpdateSimpleFtsTableByIdSQL = "UPDATE simple_fts SET DATA_ID='%s',TYPE='%s',DATA1='%s',DATA2='%s',DATA3='%s',BODY='%s' WHERE DATA_ID='%s'";
+const char *kUpdateSimpleFtsTableByIdBindSQL = "UPDATE simple_fts SET DATA_ID=?,TYPE=?,DATA1=?,DATA2=?,DATA3=?,BODY=? WHERE DATA_ID=?";
+
+const char *kCreateMutipleFtsTableSQL = "CREATE VIRTUAL TABLE IF NOT EXISTS mutiple_fts USING fts5(DATA_ID UNINDEXED,TYPE UNINDEXED,DATA1 UNINDEXED,DATA2 UNINDEXED,DATA3 UNINDEXED,BODY1,BODY2,BODY3,tokenize='single_word')";
+const char *kDropMutipleFtsTableSQL = "DROP TABLE mutiple_fts";
+const char *kInsertToMutipleFtsTableSQL = "INSERT INTO mutiple_fts VALUES ('%s','%s','%s','%s','%s','%s','%s','%s')";
+const char *kInsertToMutipleFtsTableBindSQL = "INSERT INTO mutiple_fts VALUES (?,?,?,?,?,?,?,?)";
+const char *kDeleteFromMutipleFtsTableByIdSQL = "DELETE FROM mutiple_fts WHERE DATA_ID='%s'";
+const char *kDeleteFromMutipleFtsTableByIdBindSQL = "DELETE FROM mutiple_fts WHERE DATA_ID=?";
+const char *kUpdateMutipleFtsTableByIdSQL = "UPDATE mutiple_fts SET DATA_ID='%s',TYPE='%s',DATA1='%s',DATA2='%s',DATA3='%s',BODY1='%s',BODY2='%s',BODY3='%s' WHERE DATA_ID='%s'";
+const char *kUpdateMutipleFtsTableByIdBindSQL = "UPDATE mutiple_fts SET DATA_ID=?,TYPE=?,DATA1=?,DATA2=?,DATA3=?,BODY1=?,BODY2=?,BODY3=? WHERE DATA_ID=?";
 
 char *sqlite_fts_db_path;
 static sqlite3 *sqlite_fts_db;
 
-void set_sqlite_fts_db_path(const char *path) {
+void setSqliteFtsDbPath(const char *path) {
     sqlite_fts_db_path = malloc(sizeof(char)*strlen(path));
     sqlite_fts_db_path = strcpy(sqlite_fts_db_path, path);
 }
 
-char* get_sqlite_fts_db_path(void) {
+char* getSqliteFtsDbPath(void) {
     return sqlite_fts_db_path;
 }
 
-sqlite3* get_sqlite_fts_db(void) {
+sqlite3* getSqliteFtsDb(void) {
     return sqlite_fts_db;
 }
 
-void log_error_information(char *error) {
+void logErrorInformation(char *error) {
     printf("sqlite error information:%s\n", error);
 }
 
-int open_fts_db(void) {
+int openFtsDb(void) {
     int result = sqlite3_open(sqlite_fts_db_path, &sqlite_fts_db);
     return result;
 }
 
-void close_fts_db(void) {
+void closeFtsDb(void) {
     sqlite3_close(sqlite_fts_db);
 }
 
-int create_tokenizer(void) {
+int createTokenizer(void) {
     int result = create_single_word_tokenizer(sqlite_fts_db, "single_word", NULL);
     if (result != SQLITE_OK) {
-        printf("create tokenizer failed");
+        printf("create tokenizer failed\n");
     }
     return result;
 }
 
-int execute_sql(const char *sql) {
+int executeSql(const char *sql) {
     char *error = NULL;
     int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
     if (error) {
-        log_error_information(error);
+        logErrorInformation(error);
     }
     return result;
 }
 
 int turnOffSynchronous(void) {
-    return execute_sql(kTurnOffSynchronous);
+    return executeSql(kTurnOffSynchronousSQL);
 }
 
 int beginTransaction(void) {
-    return execute_sql(kBeginTransaction);
+    return executeSql(kBeginTransactionSQL);
 }
 
 int commitTransaction(void) {
-    return execute_sql(kCommitTransaction);
+    return executeSql(kCommitTransactionSQL);
 }
 
-int create_fts_table(void) {
+int createSimpleFtsTable(void) {
     char *error = NULL;
-    int result = sqlite3_exec(sqlite_fts_db, kCreateFtsTable, NULL, NULL, &error);
+    int result = sqlite3_exec(sqlite_fts_db, kCreateSimpleFtsTableSQL, NULL, NULL, &error);
     if (error) {
-        log_error_information(error);
+        logErrorInformation(error);
     }
     return result;
 }
 
-int drop_fts_table(void) {
+int dropSimpleFtsTable(void) {
     char *error = NULL;
-    int result = sqlite3_exec(sqlite_fts_db, kDropFtsTable, NULL, NULL, &error);
+    int result = sqlite3_exec(sqlite_fts_db, kDropSimpleFtsTableSQL, NULL, NULL, &error);
     if (error) {
-        log_error_information(error);
+        logErrorInformation(error);
     }
     return result;
 }
 
-int insert_fts(const char *type, const char *col1, const char *col2, const char *col3, const char *col4, const char *col5, const char *uCol1, const char *uCol2, const char *uCol3, const char *uCol4, const char *uCol5, const char *uCol6, const char *uCol7, const char *uCol8, const char *uCol9, const char *uCol10) {
+int insertDataToSimpleFts(const char *data_id, const char *type, const char *data1, const char *data2, const char *data3, const char *body) {
     char sql[SQL_BUFFER_MAX_LENGTH];
-    sprintf(sql, kInsertToFtsTable, type, col1, col2, col3, col4, col5, uCol1, uCol2, uCol3, uCol4, uCol5, uCol6, uCol7, uCol8, uCol9, uCol10);
+    sprintf(sql, kInsertToSimpleFtsTableSQL,data_id, type, data1, data2, data3, body);
     char *error = NULL;
     int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
     if (error) {
-        log_error_information(error);
+        logErrorInformation(error);
     }
     return result;
 }
 
-int delete_fts(const char *where) {
+int deleteFromSimpleFtsById(const char *data_id) {
     char sql[SQL_BUFFER_MAX_LENGTH];
-    sprintf(sql, kDeleteFromFtsTable, where);
+    sprintf(sql, kDeleteFromSimpleFtsTableByIdSQL, data_id);
     char *error = NULL;
     int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
     if (error) {
-        log_error_information(error);
+        logErrorInformation(error);
     }
     return result;
 }
 
-int update_fts(const char *set, const char *where) {
+int updateSimpleFtsByid(const char *data_id, const char *type, const char *data1, const char *data2, const char *data3, const char *body) {
     char sql[SQL_BUFFER_MAX_LENGTH];
-    sprintf(sql, kUpdateFtsTable, set, where);
+    sprintf(sql, kUpdateSimpleFtsTableByIdSQL, data_id, type, data1, data2, data3, body, data_id);
     char *error = NULL;
     int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
     if (error) {
-        log_error_information(error);
+        logErrorInformation(error);
     }
     return result;
 }
 
-// message_table
+int createMutipleFtsTable(void) {
+    char *error = NULL;
+    int result = sqlite3_exec(sqlite_fts_db, kCreateMutipleFtsTableSQL, NULL, NULL, &error);
+    if (error) {
+        logErrorInformation(error);
+    }
+    return result;
+}
+
+int dropMutipleFtsTable(void) {
+    char *error = NULL;
+    int result = sqlite3_exec(sqlite_fts_db, kDropMutipleFtsTableSQL, NULL, NULL, &error);
+    if (error) {
+        logErrorInformation(error);
+    }
+    return result;
+}
+
+int insertDataToMutipleFts(const char *data_id, const char *type, const char *data1, const char *data2, const char *data3, const char *body1, const char *body2, const char *body3) {
+    char sql[SQL_BUFFER_MAX_LENGTH];
+    sprintf(sql, kInsertToMutipleFtsTableSQL,data_id, type, data1, data2, data3, body1, body2, body3);
+    char *error = NULL;
+    int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
+    if (error) {
+        logErrorInformation(error);
+    }
+    return result;
+}
+
+int deleteFromMutipleFtsById(const char *data_id) {
+    char sql[SQL_BUFFER_MAX_LENGTH];
+    sprintf(sql, kDeleteFromMutipleFtsTableByIdSQL, data_id);
+    char *error = NULL;
+    int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
+    if (error) {
+        logErrorInformation(error);
+    }
+    return result;
+}
+
+int updateMutipleFtsByid(const char *data_id, const char *type, const char *data1, const char *data2, const char *data3, const char *body1, const char *body2, const char *body3) {
+    char sql[SQL_BUFFER_MAX_LENGTH];
+    sprintf(sql, kUpdateMutipleFtsTableByIdSQL, data_id, type, data1, data2, data3, body1, body2, body3, data_id);
+    char *error = NULL;
+    int result = sqlite3_exec(sqlite_fts_db, sql, NULL, NULL, &error);
+    if (error) {
+        logErrorInformation(error);
+    }
+    return result;
+}

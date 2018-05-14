@@ -8,7 +8,7 @@
 
 #import "SqliteFTSManager.h"
 #import "sqlite_fts_util.h"
-#import "sqlite_fts_single_word_icu_tokenizer.h"
+#import "sqlite_fts_single_word_tokenizer.h"
 
 #define kFTSDBFilename @"sqlite_fts.sqlite"
 
@@ -21,9 +21,10 @@
 
 - (void)initFTS {
     [self setDBPath];
-    if (open_fts_db() == SQLITE_OK) {
-        if (create_tokenizer() == SQLITE_OK) {
-            create_fts_table();
+    if (openFtsDb() == SQLITE_OK) {
+        if (createTokenizer() == SQLITE_OK) {
+            createSimpleFtsTable();
+            createMutipleFtsTable();
         }
         if (turnOffSynchronous() == SQLITE_OK) {
             NSLog(@"turnOffSynchronous");
@@ -35,7 +36,7 @@
     NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     NSString *filePath = [documentPath stringByAppendingPathComponent:kFTSDBFilename];
     _ftsDBPath = [filePath copy];
-    set_sqlite_fts_db_path(filePath.UTF8String);
+    setSqliteFtsDbPath(filePath.UTF8String);
 }
 
 #pragma mark - singleton

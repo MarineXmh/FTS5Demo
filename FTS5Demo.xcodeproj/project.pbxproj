@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A7E39D2205660A4005678A1 /* FTSBaseObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A7E39D1205660A4005678A1 /* FTSBaseObject.m */; };
+		1A7E39D5205662F4005678A1 /* FTSUpdateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A7E39D4205662F4005678A1 /* FTSUpdateManager.m */; };
 		1AE4CB361FF0A552005BBBE1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AE4CB351FF0A552005BBBE1 /* AppDelegate.m */; };
 		1AE4CB391FF0A552005BBBE1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AE4CB381FF0A552005BBBE1 /* ViewController.m */; };
 		1AE4CB3C1FF0A552005BBBE1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AE4CB3A1FF0A552005BBBE1 /* Main.storyboard */; };
@@ -17,10 +19,14 @@
 		1AF160701FFC689C00194915 /* sqlite_fts_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 1AF1606F1FFC689C00194915 /* sqlite_fts_util.c */; };
 		1AF160731FFCC01B00194915 /* SqliteFTSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF160721FFCC01B00194915 /* SqliteFTSManager.m */; };
 		1AF160761FFDC1E800194915 /* SqliteFTSUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF160751FFDC1E800194915 /* SqliteFTSUtil.m */; };
-		1AF160791FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.c in Sources */ = {isa = PBXBuildFile; fileRef = 1AF160781FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.c */; };
+		1AF160791FFF190900194915 /* sqlite_fts_single_word_tokenizer.c in Sources */ = {isa = PBXBuildFile; fileRef = 1AF160781FFF190900194915 /* sqlite_fts_single_word_tokenizer.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A7E39D0205660A4005678A1 /* FTSBaseObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FTSBaseObject.h; sourceTree = "<group>"; };
+		1A7E39D1205660A4005678A1 /* FTSBaseObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FTSBaseObject.m; sourceTree = "<group>"; };
+		1A7E39D3205662F4005678A1 /* FTSUpdateManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FTSUpdateManager.h; sourceTree = "<group>"; };
+		1A7E39D4205662F4005678A1 /* FTSUpdateManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FTSUpdateManager.m; sourceTree = "<group>"; };
 		1AE4CB311FF0A552005BBBE1 /* FTS5Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FTS5Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AE4CB341FF0A552005BBBE1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1AE4CB351FF0A552005BBBE1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -40,8 +46,8 @@
 		1AF160721FFCC01B00194915 /* SqliteFTSManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SqliteFTSManager.m; sourceTree = "<group>"; };
 		1AF160741FFDC1E800194915 /* SqliteFTSUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SqliteFTSUtil.h; sourceTree = "<group>"; };
 		1AF160751FFDC1E800194915 /* SqliteFTSUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SqliteFTSUtil.m; sourceTree = "<group>"; };
-		1AF160771FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sqlite_fts_single_word_icu_tokenizer.h; sourceTree = "<group>"; };
-		1AF160781FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sqlite_fts_single_word_icu_tokenizer.c; sourceTree = "<group>"; };
+		1AF160771FFF190900194915 /* sqlite_fts_single_word_tokenizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sqlite_fts_single_word_tokenizer.h; sourceTree = "<group>"; };
+		1AF160781FFF190900194915 /* sqlite_fts_single_word_tokenizer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sqlite_fts_single_word_tokenizer.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,12 +95,16 @@
 				1AE4CB551FF0D85B005BBBE1 /* BuildScript.sh */,
 				1AF1606E1FFC689C00194915 /* sqlite_fts_util.h */,
 				1AF1606F1FFC689C00194915 /* sqlite_fts_util.c */,
-				1AF160771FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.h */,
-				1AF160781FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.c */,
+				1AF160771FFF190900194915 /* sqlite_fts_single_word_tokenizer.h */,
+				1AF160781FFF190900194915 /* sqlite_fts_single_word_tokenizer.c */,
 				1AF160711FFCC01B00194915 /* SqliteFTSManager.h */,
 				1AF160721FFCC01B00194915 /* SqliteFTSManager.m */,
 				1AF160741FFDC1E800194915 /* SqliteFTSUtil.h */,
 				1AF160751FFDC1E800194915 /* SqliteFTSUtil.m */,
+				1A7E39D0205660A4005678A1 /* FTSBaseObject.h */,
+				1A7E39D1205660A4005678A1 /* FTSBaseObject.m */,
+				1A7E39D3205662F4005678A1 /* FTSUpdateManager.h */,
+				1A7E39D4205662F4005678A1 /* FTSUpdateManager.m */,
 			);
 			path = FTS5Demo;
 			sourceTree = "<group>";
@@ -171,11 +181,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AE4CB391FF0A552005BBBE1 /* ViewController.m in Sources */,
+				1A7E39D2205660A4005678A1 /* FTSBaseObject.m in Sources */,
 				1AF160731FFCC01B00194915 /* SqliteFTSManager.m in Sources */,
 				1AF160701FFC689C00194915 /* sqlite_fts_util.c in Sources */,
 				1AF160761FFDC1E800194915 /* SqliteFTSUtil.m in Sources */,
 				1AE4CB441FF0A552005BBBE1 /* main.m in Sources */,
-				1AF160791FFF190900194915 /* sqlite_fts_single_word_icu_tokenizer.c in Sources */,
+				1AF160791FFF190900194915 /* sqlite_fts_single_word_tokenizer.c in Sources */,
+				1A7E39D5205662F4005678A1 /* FTSUpdateManager.m in Sources */,
 				1AE4CB361FF0A552005BBBE1 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

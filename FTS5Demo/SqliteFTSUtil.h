@@ -12,7 +12,8 @@
 
 + (NSMutableArray *)selectWithTable:(NSString *)table Column:(NSString *)column Match:(NSString *)match;
 + (int)executeWithSql:(NSString *)sql;
-+ (int)insertDataToFts:(NSDictionary *)data;
-+ (int)insertArrayToFts:(NSArray *)array;
++ (int)insertArrayToSimpleFts:(NSArray *)array;
++ (int)deleteArrayFromSimpleFTS:(NSArray *)array;
++ (int)updateArrayFromSimpleFTS:(NSArray *)array;
 
 @end
