@@ -26,7 +26,8 @@
 //    [self prepareTestData];
 //    [self testMatch];
 //    [self test];
-    [self testCPPFunctions];
+//    [self testCPPFunctions];
+    [self testMutipleCPPFunctions];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -86,6 +87,7 @@
 }
 
 - (void)testCPPFunctions {
+    NSLog(@"data path:%@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]);
     vector<map<string,string>> dataVector;
     for (int i = 0; i < 100; i++) {
         const char *dataId = [[NSString stringWithFormat:@"%d", i] cStringUsingEncoding:NSUTF8StringEncoding];
@@ -95,6 +97,8 @@
         dataMap.insert(make_pair("type", "666"));
         dataMap.insert(make_pair("body", "xumenghua"));
         dataMap.insert(make_pair("data1", "hahaha"));
+        dataMap.insert(make_pair("data2", ""));
+        dataMap.insert(make_pair("data3", ""));
         dataVector.push_back(dataMap);
     }
     insertVectorToSimpleFts(dataVector);
@@ -104,11 +108,52 @@
     map<string,string> updateMap;
     updateMap.insert(make_pair("data_id", "6"));
     updateMap.insert(make_pair("type", "888"));
+    updateMap.insert(make_pair("body", "xumenghua"));
+    updateMap.insert(make_pair("data1", "hahaha"));
+    updateMap.insert(make_pair("data2", ""));
+    updateMap.insert(make_pair("data3", ""));
     updateVector.push_back(updateMap);
     updateVectorToSimpleFts(updateVector);
     result = [SqliteFTSUtil selectWithTable:@"simple_fts" Column:@"simple_fts" Match:@"xu"];
     deleteVectorToSimpleFts(dataVector);
     result = [SqliteFTSUtil selectWithTable:@"simple_fts" Column:@"simple_fts" Match:@"xu"];
+}
+
+- (void)testMutipleCPPFunctions {
+    NSLog(@"data path:%@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]);
+    vector<map<string,string>> dataVector;
+    for (int i = 0; i < 100; i++) {
+        const char *dataId = [[NSString stringWithFormat:@"%d", i] cStringUsingEncoding:NSUTF8StringEncoding];
+        string dataIdStr(dataId);
+        map<string,string> dataMap;
+        dataMap.insert(make_pair("data_id", dataIdStr));
+        dataMap.insert(make_pair("type", "666"));
+        dataMap.insert(make_pair("body1", "xumenghua1"));
+        dataMap.insert(make_pair("body2", "xumenghua2"));
+        dataMap.insert(make_pair("body3", "xumenghua3"));
+        dataMap.insert(make_pair("data1", "hahaha1"));
+        dataMap.insert(make_pair("data2", "hahaha2"));
+        dataMap.insert(make_pair("data3", "hahaha3"));
+        dataVector.push_back(dataMap);
+    }
+    insertVectorToMutipleFts(dataVector);
+    
+    NSArray *result = [SqliteFTSUtil selectWithTable:@"mutiple_fts" Column:@"mutiple_fts" Match:@"um"];
+    vector<map<string,string>> updateVector;
+    map<string,string> updateMap;
+    updateMap.insert(make_pair("data_id", "6"));
+    updateMap.insert(make_pair("type", "888"));
+    updateMap.insert(make_pair("body1", "xumenghua1"));
+    updateMap.insert(make_pair("body2", "xumenghua2"));
+    updateMap.insert(make_pair("body3", "xumenghua3"));
+    updateMap.insert(make_pair("data1", "hahaha1"));
+    updateMap.insert(make_pair("data2", "hahaha2"));
+    updateMap.insert(make_pair("data3", "hahaha3"));
+    updateVector.push_back(updateMap);
+    updateVectorToMutipleFts(updateVector);
+    result = [SqliteFTSUtil selectWithTable:@"mutiple_fts" Column:@"mutiple_fts" Match:@"um"];
+    deleteVectorToMutipleFts(dataVector);
+    result = [SqliteFTSUtil selectWithTable:@"mutiple_fts" Column:@"mutiple_fts" Match:@"um"];
 }
 
 @end

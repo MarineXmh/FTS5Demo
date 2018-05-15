@@ -10,6 +10,7 @@
 extern "C"{
 #include "sqlite_fts_util.h"
 }
+#include <string.h>
 
 #define STRING_BUFFER_LENGTH 16384
 
@@ -21,13 +22,32 @@ int insertVectorToSimpleFts(vector<map<string,string>> dataVector) {
     beginTransaction();
     for (int i = 0; i < dataVector.size(); i++) {
         map<string,string> dataMap = dataVector[i];
-        const char *data_id = getValue(dataMap, "data_id");
-        const char *type = getValue(dataMap, "type");
-        const char *data1 = getValue(dataMap, "data1");
-        const char *data2 = getValue(dataMap, "data2");
-        const char *data3 = getValue(dataMap, "data3");
-        const char *body = getValue(dataMap, "body");
+        size_t size = sizeof(char)*STRING_BUFFER_LENGTH;
+        char *data_id = (char*)malloc(size);
+        memset(data_id, '\0', size);
+        strcpy(data_id, getValue(dataMap, "data_id"));
+        char *type = (char*)malloc(size);
+        memset(type, '\0', size);
+        strcpy(type, getValue(dataMap, "type"));
+        char *data1 = (char*)malloc(size);
+        memset(data1, '\0', size);
+        strcpy(data1, getValue(dataMap, "data1"));
+        char *data2 = (char*)malloc(size);
+        memset(data2, '\0', size);
+        strcpy(data2, getValue(dataMap, "data2"));
+        char *data3 = (char*)malloc(size);
+        memset(data3, '\0', size);
+        strcpy(data3, getValue(dataMap, "data3"));
+        char *body = (char*)malloc(size);
+        memset(body, '\0', size);
+        strcpy(body, getValue(dataMap, "body"));
         int result = insertDataToSimpleFts(data_id, type, data1, data2, data3, body);
+        free(data_id);
+        free(type);
+        free(data1);
+        free(data2);
+        free(data3);
+        free(body);
         if (result == SQLITE_ERROR) {
             return result;
         }
@@ -40,8 +60,12 @@ int deleteVectorToSimpleFts(vector<map<string,string>> dataVector) {
     beginTransaction();
     for (int i = 0; i < dataVector.size(); i++) {
         map<string,string> dataMap = dataVector[i];
-        const char *data_id = getValue(dataMap, "data_id");
+        size_t size = sizeof(char)*STRING_BUFFER_LENGTH;
+        char *data_id = (char*)malloc(size);
+        memset(data_id, '\0', size);
+        strcpy(data_id, getValue(dataMap, "data_id"));
         int result = deleteFromSimpleFtsById(data_id);
+        free(data_id);
         if (result == SQLITE_ERROR) {
             return result;
         }
@@ -54,13 +78,32 @@ int updateVectorToSimpleFts(vector<map<string,string>> dataVector) {
     beginTransaction();
     for (int i = 0; i < dataVector.size(); i++) {
         map<string,string> dataMap = dataVector[i];
-        const char *data_id = getValue(dataMap, "data_id");
-        const char *type = getValue(dataMap, "type");
-        const char *data1 = getValue(dataMap, "data1");
-        const char *data2 = getValue(dataMap, "data2");
-        const char *data3 = getValue(dataMap, "data3");
-        const char *body = getValue(dataMap, "body");
+        size_t size = sizeof(char)*STRING_BUFFER_LENGTH;
+        char *data_id = (char*)malloc(size);
+        memset(data_id, '\0', size);
+        strcpy(data_id, getValue(dataMap, "data_id"));
+        char *type = (char*)malloc(size);
+        memset(type, '\0', size);
+        strcpy(type, getValue(dataMap, "type"));
+        char *data1 = (char*)malloc(size);
+        memset(data1, '\0', size);
+        strcpy(data1, getValue(dataMap, "data1"));
+        char *data2 = (char*)malloc(size);
+        memset(data2, '\0', size);
+        strcpy(data2, getValue(dataMap, "data2"));
+        char *data3 = (char*)malloc(size);
+        memset(data3, '\0', size);
+        strcpy(data3, getValue(dataMap, "data3"));
+        char *body = (char*)malloc(size);
+        memset(body, '\0', size);
+        strcpy(body, getValue(dataMap, "body"));
         int result = updateSimpleFtsByid(data_id, type, data1, data2, data3, body);
+        free(data_id);
+        free(type);
+        free(data1);
+        free(data2);
+        free(data3);
+        free(body);
         if (result == SQLITE_ERROR) {
             return result;
         }
@@ -73,15 +116,40 @@ int insertVectorToMutipleFts(vector<map<string,string>> dataVector) {
     beginTransaction();
     for (int i = 0; i < dataVector.size(); i++) {
         map<string,string> dataMap = dataVector[i];
-        const char *data_id = getValue(dataMap, "data_id");
-        const char *type = getValue(dataMap, "type");
-        const char *data1 = getValue(dataMap, "data1");
-        const char *data2 = getValue(dataMap, "data2");
-        const char *data3 = getValue(dataMap, "data3");
-        const char *body1 = getValue(dataMap, "body1");
-        const char *body2 = getValue(dataMap, "body2");
-        const char *body3 = getValue(dataMap, "body3");
+        size_t size = sizeof(char)*STRING_BUFFER_LENGTH;
+        char *data_id = (char*)malloc(size);
+        memset(data_id, '\0', size);
+        strcpy(data_id, getValue(dataMap, "data_id"));
+        char *type = (char*)malloc(size);
+        memset(type, '\0', size);
+        strcpy(type, getValue(dataMap, "type"));
+        char *data1 = (char*)malloc(size);
+        memset(data1, '\0', size);
+        strcpy(data1, getValue(dataMap, "data1"));
+        char *data2 = (char*)malloc(size);
+        memset(data2, '\0', size);
+        strcpy(data2, getValue(dataMap, "data2"));
+        char *data3 = (char*)malloc(size);
+        memset(data3, '\0', size);
+        strcpy(data3, getValue(dataMap, "data3"));
+        char *body1 = (char*)malloc(size);
+        memset(body1, '\0', size);
+        strcpy(body1, getValue(dataMap, "body1"));
+        char *body2 = (char*)malloc(size);
+        memset(body2, '\0', size);
+        strcpy(body2, getValue(dataMap, "body2"));
+        char *body3 = (char*)malloc(size);
+        memset(body3, '\0', size);
+        strcpy(body3, getValue(dataMap, "body3"));
         int result = insertDataToMutipleFts(data_id, type, data1, data2, data3, body1, body2, body3);
+        free(data_id);
+        free(type);
+        free(data1);
+        free(data2);
+        free(data3);
+        free(body1);
+        free(body2);
+        free(body3);
         if (result == SQLITE_ERROR) {
             return result;
         }
@@ -94,8 +162,12 @@ int deleteVectorToMutipleFts(vector<map<string,string>> dataVector) {
     beginTransaction();
     for (int i = 0; i < dataVector.size(); i++) {
         map<string,string> dataMap = dataVector[i];
-        const char *data_id = getValue(dataMap, "data_id");
+        size_t size = sizeof(char)*STRING_BUFFER_LENGTH;
+        char *data_id = (char*)malloc(size);
+        memset(data_id, '\0', size);
+        strcpy(data_id, getValue(dataMap, "data_id"));
         int result = deleteFromMutipleFtsById(data_id);
+        free(data_id);
         if (result == SQLITE_ERROR) {
             return result;
         }
@@ -108,15 +180,40 @@ int updateVectorToMutipleFts(vector<map<string,string>> dataVector) {
     beginTransaction();
     for (int i = 0; i < dataVector.size(); i++) {
         map<string,string> dataMap = dataVector[i];
-        const char *data_id = getValue(dataMap, "data_id");
-        const char *type = getValue(dataMap, "type");
-        const char *data1 = getValue(dataMap, "data1");
-        const char *data2 = getValue(dataMap, "data2");
-        const char *data3 = getValue(dataMap, "data3");
-        const char *body1 = getValue(dataMap, "body1");
-        const char *body2 = getValue(dataMap, "body2");
-        const char *body3 = getValue(dataMap, "body3");
+        size_t size = sizeof(char)*STRING_BUFFER_LENGTH;
+        char *data_id = (char*)malloc(size);
+        memset(data_id, '\0', size);
+        strcpy(data_id, getValue(dataMap, "data_id"));
+        char *type = (char*)malloc(size);
+        memset(type, '\0', size);
+        strcpy(type, getValue(dataMap, "type"));
+        char *data1 = (char*)malloc(size);
+        memset(data1, '\0', size);
+        strcpy(data1, getValue(dataMap, "data1"));
+        char *data2 = (char*)malloc(size);
+        memset(data2, '\0', size);
+        strcpy(data2, getValue(dataMap, "data2"));
+        char *data3 = (char*)malloc(size);
+        memset(data3, '\0', size);
+        strcpy(data3, getValue(dataMap, "data3"));
+        char *body1 = (char*)malloc(size);
+        memset(body1, '\0', size);
+        strcpy(body1, getValue(dataMap, "body1"));
+        char *body2 = (char*)malloc(size);
+        memset(body2, '\0', size);
+        strcpy(body2, getValue(dataMap, "body2"));
+        char *body3 = (char*)malloc(size);
+        memset(body3, '\0', size);
+        strcpy(body3, getValue(dataMap, "body3"));
         int result = updateMutipleFtsById(data_id, type, data1, data2, data3, body1, body2, body3);
+        free(data_id);
+        free(type);
+        free(data1);
+        free(data2);
+        free(data3);
+        free(body1);
+        free(body2);
+        free(body3);
         if (result == SQLITE_ERROR) {
             return result;
         }
@@ -127,5 +224,6 @@ int updateVectorToMutipleFts(vector<map<string,string>> dataVector) {
 
 const char* getValue(map<string,string> dataMap, string key) {
     map<string,string>::iterator it = dataMap.find(key);
-    return it->second.c_str();
+    const char *value = it->second.c_str();
+    return value;
 }
