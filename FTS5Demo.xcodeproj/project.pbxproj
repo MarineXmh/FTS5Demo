@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A02D8C120AD6BC5005C25E5 /* sqlite_fts_pinyin_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 1A02D8C020AD6BC5005C25E5 /* sqlite_fts_pinyin_util.c */; };
 		1A20412020A9806E006A6385 /* sqlite_fts_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A20411E20A9806E006A6385 /* sqlite_fts_util.cpp */; };
 		1AE4CB361FF0A552005BBBE1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AE4CB351FF0A552005BBBE1 /* AppDelegate.m */; };
 		1AE4CB391FF0A552005BBBE1 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1AE4CB381FF0A552005BBBE1 /* ViewController.mm */; };
@@ -22,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A02D8BF20AD6BC5005C25E5 /* sqlite_fts_pinyin_util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sqlite_fts_pinyin_util.h; sourceTree = "<group>"; };
+		1A02D8C020AD6BC5005C25E5 /* sqlite_fts_pinyin_util.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sqlite_fts_pinyin_util.c; sourceTree = "<group>"; };
 		1A20411E20A9806E006A6385 /* sqlite_fts_util.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sqlite_fts_util.cpp; sourceTree = "<group>"; };
 		1A20411F20A9806E006A6385 /* sqlite_fts_util.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sqlite_fts_util.hpp; sourceTree = "<group>"; };
 		1AE4CB311FF0A552005BBBE1 /* FTS5Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FTS5Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +103,8 @@
 				1AF160751FFDC1E800194915 /* SqliteFTSUtil.m */,
 				1A20411E20A9806E006A6385 /* sqlite_fts_util.cpp */,
 				1A20411F20A9806E006A6385 /* sqlite_fts_util.hpp */,
+				1A02D8BF20AD6BC5005C25E5 /* sqlite_fts_pinyin_util.h */,
+				1A02D8C020AD6BC5005C25E5 /* sqlite_fts_pinyin_util.c */,
 			);
 			path = FTS5Demo;
 			sourceTree = "<group>";
@@ -183,6 +188,7 @@
 				1AE4CB441FF0A552005BBBE1 /* main.m in Sources */,
 				1AF160791FFF190900194915 /* sqlite_fts_single_word_tokenizer.c in Sources */,
 				1AE4CB361FF0A552005BBBE1 /* AppDelegate.m in Sources */,
+				1A02D8C120AD6BC5005C25E5 /* sqlite_fts_pinyin_util.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
