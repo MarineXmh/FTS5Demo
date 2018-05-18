@@ -54,7 +54,43 @@
     return array;
 }
 
-+ (int)insertArrayToSimpleFts:(NSArray *)array {
++ (NSMutableArray *)queryMessagesAndCountMsgIdGroupBySessionIdWithKeyword:(NSString *)keyword {
+    NSString *querySql = [NSString stringWithFormat:@"SELECT *,COUNT(DATA_ID) AS count FROM simple_fts WHERE simple_fts MATCH '%@' GROUP BY DATA1", keyword];
+    NSMutableArray *result = [self queryWithSql:querySql];
+    return result;
+}
+
++ (NSMutableArray *)queryWithSql:(NSString *)sql {
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    if (sql.length == 0) {
+        return array;
+    }
+    sqlite3 *db = getSqliteFtsUtilDb();
+    sqlite3_stmt *stmt = NULL;
+    int result = sqlite3_prepare_v2(db, sql.UTF8String, -1, &stmt, NULL);
+    if (result == SQLITE_OK) {
+        int columnCount = sqlite3_column_count(stmt);
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            NSMutableDictionary *data = [NSMutableDictionary dictionary];
+            for (int i = 0; i < columnCount; i++) {
+                NSString *text = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(stmt, i)];
+                if (text == nil) {
+                    text = @"";
+                }
+                NSString *column = [NSString stringWithUTF8String:(const char *)sqlite3_column_name(stmt, i)];
+                [data setObject:text forKey:column];
+            }
+            [array addObject:data];
+        }
+    } else {
+        const char* error = sqlite3_errmsg(db);
+        NSLog(@"查询失败:%s", error);
+    }
+    sqlite3_finalize(stmt);
+    return array;
+}
+
++ (int)insertArrayToSimpleFTS:(NSArray *)array {
     beginTransaction();
 //    sqlite3_stmt *stmt = NULL;
 //    sqlite3 *db = getSqliteFtsDb();
@@ -147,7 +183,7 @@
     return SQLITE_OK;
 }
 
-+ (int)insertArrayToMutipleFts:(NSArray *)array {
++ (int)insertArrayToMutipleFTS:(NSArray *)array {
     beginTransaction();
     //    sqlite3_stmt *stmt = NULL;
     //    sqlite3 *db = getSqliteFtsDb();

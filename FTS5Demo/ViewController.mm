@@ -26,11 +26,12 @@ extern "C"{
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     [[SqliteFTSManager sharedManager] initFTS];
-    [self prepareTestData];
-    [self testMatch];
-    [self test];
-    [self testCPPFunctions];
-    [self testMutipleCPPFunctions];
+//    [self prepareTestData];
+    [self testQueryMessages];
+//    [self testMatch];
+//    [self test];
+//    [self testCPPFunctions];
+//    [self testMutipleCPPFunctions];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,11 +49,12 @@ extern "C"{
         NSUInteger length = arc4random() % (text.length - location);
         NSRange range = NSMakeRange(location, length);
         NSString *messageId = [NSString stringWithFormat:@"%06d", i];
+        NSString *sessionId = [NSString stringWithFormat:@"%06d", i/10];
         NSString *message = [text substringWithRange:range];
-        NSDictionary *data = @{@"type":@"1", @"body":message, @"data_id":messageId};
+        NSDictionary *data = @{@"type":@"1", @"body":message, @"data_id":messageId, @"data1":sessionId};
         [dataArray addObject:data];
     }
-    if ([SqliteFTSUtil insertArrayToSimpleFts:dataArray] != SQLITE_OK) {
+    if ([SqliteFTSUtil insertArrayToSimpleFTS:dataArray] != SQLITE_OK) {
         NSLog(@"prepare test data error");
     }
     NSDate *finishTime = [NSDate date];
@@ -80,7 +82,7 @@ extern "C"{
         NSDictionary *data = @{@"data_id":[NSString stringWithFormat:@"%d", i], @"type":@"1", @"body":@"abcd", @"data1":@"gggg"};
         [dataArray addObject:data];
     }
-    [SqliteFTSUtil insertArrayToSimpleFts:dataArray];
+    [SqliteFTSUtil insertArrayToSimpleFTS:dataArray];
     [SqliteFTSUtil deleteArrayFromSimpleFTS:@[@{@"data_id":@"1"}]];
     NSArray *result = [SqliteFTSUtil selectWithTable:@"simple_fts" Column:@"simple_fts" Match:@"a"];
     [SqliteFTSUtil updateArrayFromSimpleFTS:@[@{@"data_id":@"99", @"type":@"5", @"body":@"abcdefg", @"data1":@"ggggasdf"}]];
@@ -159,6 +161,18 @@ extern "C"{
     result = [SqliteFTSUtil selectWithTable:@"mutiple_fts" Column:@"mutiple_fts" Match:@"um"];
     deleteVectorToMutipleFts(dataVector);
     result = [SqliteFTSUtil selectWithTable:@"mutiple_fts" Column:@"mutiple_fts" Match:@"um"];
+}
+
+- (void)testQueryMessages {
+    NSLog(@"data path:%@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]);
+    NSDate *startTime = [NSDate date];
+    NSLog(@"match started");
+    NSArray *result = [SqliteFTSUtil queryMessagesAndCountMsgIdGroupBySessionIdWithKeyword:@"江泽民"];
+    NSDate *finishTime = [NSDate date];
+    NSTimeInterval time = [finishTime timeIntervalSinceDate:startTime];
+    NSLog(@"match finished");
+    NSLog(@"time:%lf", time);
+    NSLog(@"result list count:%ld", result.count);
 }
 
 @end
