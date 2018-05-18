@@ -7,8 +7,8 @@
 //
 
 #import "SqliteFTSManager.h"
+#import "sqlite_fts_init_util.h"
 #import "sqlite_fts_util.h"
-#import "sqlite_fts_single_word_tokenizer.h"
 
 #define kFTSDBFilename @"sqlite_fts.sqlite"
 
@@ -20,26 +20,10 @@
 @implementation SqliteFTSManager
 
 - (void)initFTS {
-    [self setDBPath];
-    if (openFtsDb() == SQLITE_OK) {
-        if (createTokenizer() == SQLITE_OK) {
-            [self createTables];
-        }
-        if (turnOffSynchronous() == SQLITE_OK) {
-            NSLog(@"turnOffSynchronous");
-        }
-    }
-}
-
-- (void)setDBPath {
     NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     NSString *filePath = [documentPath stringByAppendingPathComponent:kFTSDBFilename];
-    setSqliteFtsDbPath(filePath.UTF8String);
-}
-
-- (void)createTables {
-    createSimpleFtsTable();
-    createMutipleFtsTable();
+    initFTS(filePath.UTF8String);
+    setSqliteFtsUtilDb(getSqliteFtsInitDb());
 }
 
 #pragma mark - singleton

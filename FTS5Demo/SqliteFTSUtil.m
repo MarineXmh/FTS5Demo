@@ -28,7 +28,7 @@
     if (match == nil || [match isEqualToString:@""]) {
         match = @"*";
     }
-    sqlite3 *db = getSqliteFtsDb();
+    sqlite3 *db = getSqliteFtsUtilDb();
     NSString *sqlite = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@ MATCH '%@'", table, column, match];
     sqlite3_stmt *stmt = NULL;
     int result = sqlite3_prepare_v2(db, sqlite.UTF8String, -1, &stmt, NULL);

@@ -26,11 +26,11 @@ extern "C"{
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     [[SqliteFTSManager sharedManager] initFTS];
-//    [self prepareTestData];
-//    [self testMatch];
-//    [self test];
+    [self prepareTestData];
+    [self testMatch];
+    [self test];
     [self testCPPFunctions];
-//    [self testMutipleCPPFunctions];
+    [self testMutipleCPPFunctions];
 }
 
 - (void)didReceiveMemoryWarning {
